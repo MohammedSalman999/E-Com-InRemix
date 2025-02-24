@@ -183,6 +183,25 @@ function Index() {
           ))}
         </div>
       </div>
+<<<<<<< HEAD
+=======
+      {/* Shop Now Button */}
+      <div className="items-end mt-8 flex justify-center">
+        <Link
+          to="/products"
+          className="relative inline-block transition-transform hover:scale-105"
+        >
+          <img
+            className="w-48 h-12"
+            src="/images/rectangle-11.svg"
+            alt="Shop Now Background"
+          />
+          <span className="absolute inset-0 flex items-center justify-center text-white text-2xl italic">
+            Shop Now
+          </span>
+        </Link>
+      </div>
+>>>>>>> 0e80c134ecf80c2879b6c391edfb36366dc8ea49
     </div>
   );
 }
