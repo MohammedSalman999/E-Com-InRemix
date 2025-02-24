@@ -95,7 +95,7 @@ const Index: FC = () => {
             src="/images/rectangle-11.svg"
             alt="Shop Now Background"
           />
-          <span className="absolute inset-0 flex items-center justify-center text-white text-2xl font-semibold">
+          <span className="absolute inset-0 flex items-center justify-center text-white text-2xl italic">
             Shop Now
           </span>
         </Link>
