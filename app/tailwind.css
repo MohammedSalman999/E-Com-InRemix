@@ -2,10 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Beleza";
+  src: url("/fonts/Belleza-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;
-
+  font-family: "Beleza", sans-serif;
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }

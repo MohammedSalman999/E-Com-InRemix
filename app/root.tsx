@@ -1,13 +1,12 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react"
+import type { LinksFunction, LoaderFunction } from "@remix-run/node"
 
-import "./tailwind.css";
+import "./tailwind.css"
+
+// Import necessary Clerk components and functions
+import { ClerkApp,useUser} from "@clerk/remix"
+import { rootAuthLoader } from "@clerk/remix/ssr.server"
+
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -18,13 +17,19 @@ export const links: LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Beleza&family=Inter:wght@100..900&display=swap",
   },
-];
+]
 
-export function Layout({ children }: { children: React.ReactNode }) {
+// Update the loader function
+export const loader: LoaderFunction = (args) => rootAuthLoader(args)
+
+// Update the App component
+function App() {
+  const { user, isLoaded } = useUser()
+
   return (
-    <html lang="en">
+    <html lang="en" className="font-sans">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,14 +37,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <Outlet context={{ user, isLoaded }} />
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
-  );
+  )
 }
 
-export default function App() {
-  return <Outlet />;
-}
+// Wrap the App with ClerkApp and export
+export default ClerkApp(App)
+
+
