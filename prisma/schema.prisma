@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  subCategoryId String  @db.ObjectId // Foreign Key to SubCategory
+  categoryId  String  @db.ObjectId // Foreign Key to Category
+  subCategory SubCategory @relation(fields: [subCategoryId], references: [id])
+  category    Category    @relation(fields: [categoryId], references: [id])
+}
+
+model SubCategory {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  categoryId  String   @db.ObjectId // Foreign Key
+  category    Category @relation(fields: [categoryId], references: [id])
+  products    Product[]
+}
+
+model Category {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  subCategories SubCategory[]
+  products    Product[] // Directly relate all products in this category
+}

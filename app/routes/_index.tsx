@@ -1,4 +1,4 @@
-import { SparklesCore } from "components/ui/sparkles";
+import { SparklesCore } from "~/components/ui/sparkles";
 import { motion } from "framer-motion";
 import { useNavigate } from "@remix-run/react";
 
@@ -6,8 +6,8 @@ export default function WelcomeScreen() {
   const navigate = useNavigate();
   const handleAnimationComplete = () => {
     setTimeout(() => {
-      navigate("/home/products"); 
-    }, 1200);
+      navigate("/home");
+    }, 1000);
   };
   return (
     <div className="w-full h-screen">
@@ -40,7 +40,7 @@ export default function WelcomeScreen() {
             </div>
 
             <div className="relative w-full flex flex-col items-center gap-10">
-              <div className="text-white text-7xl w-[78%] justify-start">
+              <div className="text-white text-8xl w-[78%] self-start">
                 Welcome To
               </div>
               <div>
