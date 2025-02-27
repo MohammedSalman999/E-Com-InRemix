@@ -19,7 +19,7 @@ const Card: FC<CardProps> = ({
 }) => {
   return (
     // <Link to={`/products/${title}`}>
-    <Link to={`/sidebar`}>
+    <Link to={`/products`}>
       <div
         className={`relative w-64 h-20 transition-all duration-300 ${
           isExpanded ? "z-50" : "z-0"
