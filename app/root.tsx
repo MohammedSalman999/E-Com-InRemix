@@ -3,10 +3,10 @@ import type { LinksFunction, LoaderFunction } from "@remix-run/node"
 
 import "./tailwind.css"
 
-// Import necessary Clerk components and functions
-import { ClerkApp,useUser} from "@clerk/remix"
+// Clerk authentication imports
+import { ClerkApp, useUser } from "@clerk/remix"
 import { rootAuthLoader } from "@clerk/remix/ssr.server"
-
+import { useAuth } from "@clerk/remix"
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -21,12 +21,11 @@ export const links: LinksFunction = () => [
   },
 ]
 
-// Update the loader function
 export const loader: LoaderFunction = (args) => rootAuthLoader(args)
 
-// Update the App component
 function App() {
   const { user, isLoaded } = useUser()
+  const { isSignedIn } = useAuth()
 
   return (
     <html lang="en" className="font-sans">
@@ -45,7 +44,4 @@ function App() {
   )
 }
 
-// Wrap the App with ClerkApp and export
 export default ClerkApp(App)
-
-

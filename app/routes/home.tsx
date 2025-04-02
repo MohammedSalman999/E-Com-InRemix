@@ -2,24 +2,39 @@ import { Link } from "@remix-run/react";
 import { UserButton, SignedIn, SignedOut } from "@clerk/remix";
 import { FC, useState } from "react";
 
-interface CardProps {
-  title: string;
-  description: string;
+interface CategoriesProps {
+  name: string;
+  id: string;
   isExpanded: boolean;
   onHover: (expand: boolean) => void;
   expandDirection: string; // Fix: Added expandDirection in props
 }
 
-const Card: FC<CardProps> = ({
-  title,
-  description,
+interface Category {
+  id: string;
+  name: string;
+}
+
+const categories: Category[] = [
+  { id: "Adhesives", name: "adhesives" },
+  { id: "building-materials", name: "building Materials" },
+  { id: "doors-Woods", name: "doors & woods" },
+  { id: "electrical", name: "Electrical" },
+  { id: "flooring", name: "Flooring" },
+  { id: "home", name: "Home Appliances" },
+  { id: "kitchen", name: "Kitchen & Home Hardware" },
+  { id: "Paints", name: "Paints" },
+];
+
+const Card: FC<CategoriesProps> = ({
+  name,
+  id,
   isExpanded,
   onHover,
   expandDirection,
 }) => {
   return (
-    // <Link to={`/products/${title}`}>
-    <Link to={`/products`}>
+    <Link to={`/products/${id}`}>
       <div
         className={`relative w-64 h-20 transition-all duration-300 ${
           isExpanded ? "z-50" : "z-0"
@@ -29,7 +44,7 @@ const Card: FC<CardProps> = ({
       >
         <div className="absolute inset-0 flex items-center justify-center group">
           <div
-            className={`relative w-64 h-20 bg-[#05032B] backdrop-blur-md shadow-lg transition-all duration-300 ease-in-out overflow-hidden cursor-pointer border border-white/10 hover:border-white/20 hover:bg-gray-800/60 
+            className={`relative w-64 h-20 bg-[#05032B] backdrop-blur-md shadow-lg transition-all duration-300 ease-in-out overflow-hidden cursor-pointer border border-white/10 hover:border-white/20 hover:bg-gray-800/60
                       ${
                         isExpanded
                           ? `w-96 h-80 rounded-3xl ${expandDirection}`
@@ -42,14 +57,14 @@ const Card: FC<CardProps> = ({
                 isExpanded ? "opacity-0" : "opacity-100"
               }`}
             >
-              <h3 className="text-xl text-white truncate p-6">{title}</h3>
+              <h3 className="text-xl text-white truncate p-6">{name}</h3>
             </div>
 
             {/* Expanded View */}
             {isExpanded && (
               <div className="absolute inset-0 opacity-100 transition-opacity duration-300 flex flex-col justify-center p-6">
-                <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
-                <p className="text-gray-300/90 line-clamp-3">{description}</p>
+                <h3 className="text-xl font-bold text-white mb-3">{name}</h3>
+                <p className="text-gray-300/90 line-clamp-3">{id}</p>
               </div>
             )}
           </div>
@@ -59,29 +74,9 @@ const Card: FC<CardProps> = ({
   );
 };
 
-const CustomLayout: FC = () => {
+export default function CustomLayout() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
-  const cards = [
-    { title: "Adhesives and Sealants", description: "Capture moments." },
-    {
-      title: "Building Material",
-      description: "Experience the best materials.",
-    },
-    {
-      title: "Doors Window and Woods",
-      description: "Quality wood and designs.",
-    },
-    { title: "Electrical", description: "Latest electrical appliances." },
-    { title: "Flooring", description: "Best flooring solutions." },
-    { title: "Home Appliances", description: "Affordable home appliances." },
-    { title: "Kitchen and Home Hardware", description: "Kitchen essentials." },
-    { title: "Paints", description: "Premium quality paints." },
-    { title: "Plumbing", description: "Reliable plumbing solutions." },
-    { title: "Tools", description: "Top-notch tools for professionals." },
-    { title: "Hobs", description: "Modern kitchen hobs." },
-    { title: "Chimney", description: "Best chimneys for your home." },
-  ];
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 flex flex-col overflow-auto">
       {/* Header */}
@@ -95,6 +90,7 @@ const CustomLayout: FC = () => {
         </div>
         <div className="flex items-center space-x-4">
           <div data-svg-wrapper>
+            <Link to="/cart">
             <svg
               width="25"
               height="25"
@@ -107,6 +103,7 @@ const CustomLayout: FC = () => {
                 fill="white"
               />
             </svg>
+            </Link>
           </div>
           <div data-svg-wrapper>
             <svg
@@ -178,19 +175,20 @@ const CustomLayout: FC = () => {
 
               <div className="w-[70%]">
                 <div className="grid grid-cols-3 gap-4 relative">
-                  {cards.map((card, index) => {
+                  {categories.map((category, index) => {
                     const row = Math.floor(index / 3);
                     const expandDirection =
                       row < 2 ? "translate-y-32" : "-translate-y-32"; // First 2 rows down, last 2 rows up
                     return (
                       <Card
-                        key={index}
-                        {...card}
+                        key={category.id}
+                        name={category.name}
+                        id={category.id}
                         isExpanded={expandedIndex === index}
                         onHover={(expand) =>
                           setExpandedIndex(expand ? index : null)
                         }
-                        expandDirection={expandDirection} // Fix: Always pass expandDirection
+                        expandDirection={expandDirection} // Adjust as needed
                       />
                     );
                   })}
@@ -230,6 +228,4 @@ const CustomLayout: FC = () => {
       </footer>
     </div>
   );
-};
-
-export default CustomLayout;
+}
